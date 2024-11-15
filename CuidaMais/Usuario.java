@@ -28,7 +28,7 @@ public abstract class Usuario {
     public void setidade(int idade) {
         this.idade = idade;
     }
-    public int getidade() {
+    public int getIdade() {
         return idade;
     }
 }

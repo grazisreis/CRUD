@@ -1,26 +1,19 @@
 public class Anuncio {
-    private static int idGerado = 0;
     private int id;
     private String nomeCuidador;
     private String descricao;
-    private float valor;
+    private Double valor;
     private String telefoneCuidador;
     private String cpfCuidador;
     
 
-    public Anuncio(Cuidador cuidador, String descricao, float valor) {
-        this.id = gerarId();
+    public Anuncio(int id,Cuidador cuidador, String descricao, Double valor) {
+        this.id = id;
         this.nomeCuidador = cuidador.getNome();
         this.descricao = descricao;
         this.valor = valor;
         this.telefoneCuidador = cuidador.getTelefone();
         this.cpfCuidador = cuidador.getCpf();
-    }
-
-
-    public static int gerarId() {
-        idGerado += 1;
-        return idGerado;
     }
 
     
@@ -48,10 +41,10 @@ public class Anuncio {
     }
 
 
-    public void setValor(float valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
-    public float getValor() {
+    public Double getValor() {
         return valor;
     }
 
@@ -61,9 +54,6 @@ public class Anuncio {
     }
 
 
-    
-    
-    
     public int getId() {
         return id;
     }

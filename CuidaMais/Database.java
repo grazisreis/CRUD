@@ -1,97 +1,113 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 
 public class Database {
 
     private List<Cuidador> cuidadores = new ArrayList<>();
     private List<Familiar> familiares = new ArrayList<>();
     private List<Anuncio> anuncios = new ArrayList<>();
+    private JTextArea display;
+    private int id;
 
     
-    public void setCuidador(Cuidador cuidador) {
-        this.cuidadores.add(cuidador);
-    }
-    public List<Cuidador> getCuidadores() {
-        return this.cuidadores;
-    }
-
-    
-    public void setFamiliar(Familiar familiar) {
-        this.familiares.add(familiar);
-    }
-    public List<Familiar> getFamiliares() {
-        return this.familiares;
-    }
-
-
-    public void listarAnuncios(Cuidador cuidador) {
-        System.out.println("\n---------------\n");
-        System.out.println("Seus anúncios: ");
-        for (Anuncio anuncio : this.anuncios) {
-            
-         if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
-            System.out.println(""); 
-            System.out.println("Id: " + anuncio.getId());
-            System.out.println("Descrição: " + anuncio.getDescricao());
-            System.out.println("Valor: R$ " + anuncio.getValor());
-            System.out.println("");
-            
-         }
+        public void addCuidador (String cpf, String nome, int idade, String telefone){
+            Cuidador cuidador = new Cuidador(cpf, nome, idade, telefone);
+            cuidadores.add(cuidador);
         }
-        System.out.println("---------------\n");
-    }
+    
+        public void addFamiliar (String cpf, String nome, int idade){
+            Familiar familiar = new Familiar(cpf, nome, idade);
+            familiares.add(familiar);
+        }
+    
+        public void addAnuncio (Cuidador cuidador, String descricao, Double valor){
+            Anuncio anuncio = new Anuncio(id++,cuidador, descricao, valor);
+            anuncios.add(anuncio);
+        }
+    
+        
+        public void setCuidador(Cuidador cuidador) {
+            this.cuidadores.add(cuidador);
+        }
+        public List<Cuidador> getCuidadores() {
+            return this.cuidadores;
+        }
+    
+        
+        public void setFamiliar(Familiar familiar) {
+            this.familiares.add(familiar);
+        }
+        public List<Familiar> getFamiliares() {
+            return this.familiares;
+        }
+    
+    
+        public void listarAnuncios(Cuidador cuidador, JTextArea display) {
+            display.setText("SEUS ANÚNCIOS:\n"); // Limpa e define o cabeçalho inicial
+        
+            for (Anuncio anuncio : this.anuncios) {
+                if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+                    display.append("\nID: " + anuncio.getId() +
+                                   "\nDESCRIÇÃO: " + anuncio.getDescricao() +
+                                   "\nVALOR: R$ " + anuncio.getValor() +
+                                   "\n---------------\n");
+                }
+            }
+        }        
+        
+    
+        public void listarAnuncios(JTextArea display) {
+            display.setText("---------------\n");
+            display.append("CUIDA+ ANÚNCIOS\n");
+        
+            for (Anuncio anuncio : this.anuncios) {
+                display.append("\nCUIDADOR: " + anuncio.getNomeCuidador() +
+                               "\nDESCRIÇÃO: " + anuncio.getDescricao() +
+                               "\nVALOR: R$ " + anuncio.getValor() +
+                               "\nTELEFONE PARA CONTATO: " + anuncio.getTelefoneCuidador() +
+                               "\n---------------\n");
+            }
+        }
+        
+        public void listarAnuncio(Cuidador cuidador, Anuncio anuncio, JTextArea display) {
+            display.setText("DADOS DO ANÚNCIO\n" +
+            "ID: " + anuncio.getId() + "\n" +
+            "DESCRIÇÃO: " + anuncio.getDescricao() + "\n" +
+            "VALOR: R$ " + anuncio.getValor());
 
-    public void listarAnuncios() {
-        System.out.println("---------------");
-        System.out.println("CUIDAMAIS+ ANÚNCIOS ");
-        for (Anuncio anuncio : this.anuncios) {
-            System.out.println("");
-            System.out.println("Cuidador: " + anuncio.getNomeCuidador());
-            System.out.println("Descrição: " + anuncio.getDescricao());
-            System.out.println("Valor: R$ " + anuncio.getValor());
-            System.out.println("Telefone para contato: " + anuncio.getTelefoneCuidador());   
-            System.out.println("");
-         }
-        System.out.println("---------------");
-    }
+        }
 
-    public void listarAnuncio(Cuidador cuidador, Anuncio anuncio) {
-        System.out.println("\nDADOS DO ANÚNCIO\n");
-        System.out.println("Id: " + anuncio.getId());
-        System.out.println("Descrição: " + anuncio.getDescricao());
-        System.out.println("Valor: R$ " + anuncio.getValor());
-    }
+    public void setAnuncio(Anuncio anuncio) {
 
-    public void setAnuncio(Cuidador cuidador, String descricao, float valor) {
-        Anuncio anuncio = new Anuncio(cuidador, descricao, valor);
-        anuncios.add(anuncio);
+        this.anuncios.add(anuncio);
     }
     public List<Anuncio> getAnuncios() {
         return this.anuncios;
     }
 
-    public void editarAnuncio(Cuidador cuidador, int id, String descricao, float valor) {
+    public void editarAnuncio(Cuidador cuidador, int id, String descricao, Double valor, JTextArea display) {
         Anuncio anuncio = getAnuncio(id);
         anuncio.setDescricao(descricao);
-        System.out.println("Descrição alterada com sucesso! ");
         anuncio.setValor(valor);
-        System.out.println("Valor alterado com sucesso! ");
+        display.append("DESCRIÇÃO E VALOR ALTERADO COM SUCESSO!");
     }
-    public void editarAnuncio(Cuidador cuidador, int id, String descricao) {
+    public void editarAnuncio(Cuidador cuidador, int id, String descricao, JTextArea display) {
         Anuncio anuncio = getAnuncio(id);
         anuncio.setDescricao(descricao);
-        System.out.println("Descrição alterada com sucesso! ");
+        display.append("DESCRIÇÃO ALTERADA COM SUCESSO!");
     }
-    public void editarAnuncio(Cuidador cuidador, int id, float valor) {
+    public void editarAnuncio(Cuidador cuidador, int id, Double valor, JTextArea display) {
         Anuncio anuncio = getAnuncio(id);
         anuncio.setValor(valor);
-        System.out.println("Valor alterado com sucesso! ");
+        display.append("VALOR ALTERADO COM SUCESSO!");
     }
 
-    public void deletarAnuncio(Cuidador cuidador, Anuncio anuncio) {
+    public void deletarAnuncio(Cuidador cuidador, Anuncio anuncio, JTextArea display) {
         this.anuncios.remove(anuncio);
-        System.out.println("Anúncio de ID " + anuncio.getId() + "removido com sucesso! ");
+        display.setText("ANÚNCIO DE ID " + anuncio.getId() + " REMOVIDO COM SUCESSO!");
     }
 
     public Anuncio getAnuncio(int id) {
@@ -121,6 +137,15 @@ public class Database {
         return null;
     }
 
+    public int getId(){
+        return id;
+    }
+
+    public void limparDisplay() {
+        display.setText("");
+    }
+
+    
 
 }
 

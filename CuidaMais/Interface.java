@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class Interface extends JFrame {
     
     private Database db;
-    private JTextField cpfField, nomeField, idadeField, telefoneField, valorField, descricaoField, cuidadorField, idField;
+    private JTextField cpfField, nomeField, idadeField, telefoneField, valorField, descricaoField, cuidadorField, idField, familiarField;
     private JTextArea display;
     private Cuidador cuidador;
     private Familiar familiar;
@@ -429,6 +429,8 @@ public class Interface extends JFrame {
         display = new JTextArea(10, 30);
         display.setEditable(false);
         JScrollPane scroll = new JScrollPane(display);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         c.gridx = 2;
         c.gridy = 5;
         c.gridwidth = 2;
@@ -544,8 +546,10 @@ public class Interface extends JFrame {
         display = new JTextArea(10, 30);
         display.setEditable(false);
         JScrollPane scroll = new JScrollPane(display);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         c.gridx = 3;
-        c.gridy ++;
+        c.gridy++;
         c.gridwidth = 2;
         panel.add(scroll, c);
 
@@ -801,7 +805,7 @@ public class Interface extends JFrame {
         
                     int confirm = JOptionPane.showConfirmDialog(
                         null,
-                        "TEM CERTEZA QUE DESEJA DELETAR ANÚNCIO COM " + id + "?",
+                        "TEM CERTEZA QUE DESEJA DELETAR ANÚNCIO COM ID " + id + "?",
                         "CONFIRMAR A EXCLUSÃO",
                         JOptionPane.YES_NO_OPTION
                     );
@@ -909,18 +913,73 @@ public class Interface extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 5);
 
-        JLabel titleLabel = new JLabel("CUIDA+");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        titleLabel.setForeground(new Color(70, 130, 180));
+        JLabel titleLabel = new JLabel();
+        ImageIcon iconLogo = new ImageIcon("logocuidaplus.png");
+        titleLabel.setIcon(iconLogo);
+
+        JLabel titleLabel1 = new JLabel("ESCOLHA ESSAS OPÇOES COMO FAMILIAR");
+        titleLabel1.setFont(new Font("Arial", Font.BOLD, 15));
+        titleLabel1.setForeground(new Color(70, 130, 180));
 
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
         panel.add(titleLabel, c);
+    
+        c.gridy = 1;
+        panel.add(titleLabel1, c);
+
+        
+        JLabel familiarLabel = new JLabel("FAMILIAR:");
+        familiarField  = new JTextField(15);
+        familiarField.setEditable(false);
+        familiar = db.getFamiliar(cpf);
+        familiarField.setText(familiar.getNome().toUpperCase());
+
+        c.gridwidth = 0;
+        c.gridx = 0;
+        c.gridy ++;
+        panel.add(familiarLabel, c);
+        c.gridx = 1;
+        c.gridy ++;
+        panel.add(familiarField, c);
+
+        JButton btnListarA = new JButton("VER ANÚNCIOS");
+        JButton btnMenu = new JButton("VOLTAR AO MENU");
+
+        c.gridy ++;
+        panel.add(btnListarA, c);
+        c.gridy++;
+        panel.add(btnMenu, c);
+
+        display = new JTextArea(10, 30);
+        display.setEditable(false);
+        JScrollPane scroll = new JScrollPane(display);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        c.gridy++;
+        c.gridwidth = 2;
+        panel.add(scroll, c);
+
+        btnListarA.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                db.listarAnuncios(display);
+            }
+        });
+
+        btnMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                janelafamiliar.dispose();
+                initUI();
+            }
+        });
 
         janelafamiliar.add(panel);
         janelafamiliar.setVisible(true);
-
     }
 
     private boolean saoValoresDiferentes(double valor1, double valor2) {

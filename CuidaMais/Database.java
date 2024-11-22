@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JTextArea;
 
 
@@ -90,24 +89,41 @@ public class Database {
 
     public void editarAnuncio(Cuidador cuidador, int id, String descricao, Double valor, JTextArea display) {
         Anuncio anuncio = getAnuncio(id);
-        anuncio.setDescricao(descricao);
-        anuncio.setValor(valor);
-        display.append("DESCRIÇÃO E VALOR ALTERADO COM SUCESSO!");
+        if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+            anuncio.setDescricao(descricao);
+            anuncio.setValor(valor);
+            display.append("DESCRIÇÃO E VALOR ALTERADO COM SUCESSO!");
+        } else {
+            display.append("VOCÊ NÃO POSSUI NENHUM ANÚNCIO COM ESSE ID.");
+        }
     }
     public void editarAnuncio(Cuidador cuidador, int id, String descricao, JTextArea display) {
         Anuncio anuncio = getAnuncio(id);
-        anuncio.setDescricao(descricao);
-        display.append("DESCRIÇÃO ALTERADA COM SUCESSO!");
+        if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+            anuncio.setDescricao(descricao);
+            display.append("DESCRIÇÃO ALTERADA COM SUCESSO!");
+        } else {
+            display.append("VOCÊ NÃO POSSUI NENHUM ANÚNCIO COM ESSE ID.");
+        }
+        
     }
     public void editarAnuncio(Cuidador cuidador, int id, Double valor, JTextArea display) {
         Anuncio anuncio = getAnuncio(id);
-        anuncio.setValor(valor);
-        display.append("VALOR ALTERADO COM SUCESSO!");
+        if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+            anuncio.setValor(valor);
+            display.append("VALOR ALTERADO COM SUCESSO!");
+        } else {
+            display.append("VOCÊ NÃO POSSUI NENHUM ANÚNCIO COM ESSE ID.");
+        }
     }
 
     public void deletarAnuncio(Cuidador cuidador, Anuncio anuncio, JTextArea display) {
-        this.anuncios.remove(anuncio);
-        display.setText("ANÚNCIO DE ID " + anuncio.getId() + " REMOVIDO COM SUCESSO!");
+        if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+            this.anuncios.remove(anuncio);
+            display.setText("ANÚNCIO DE ID " + anuncio.getId() + " REMOVIDO COM SUCESSO!");
+        } else {
+            display.append("VOCÊ NÃO POSSUI NENHUM ANÚNCIO COM ESSE ID."); 
+        }
     }
 
     public Anuncio getAnuncio(int id) {

@@ -520,8 +520,8 @@ public class Interface extends JFrame {
         c.gridx = 0;
         c.gridy ++;
         panel.add(cuidadorLabel, c);
-        c.gridx = 1;
         c.gridy ++;
+        //
         panel.add(cuidadorField, c);
 
         JButton btnListarA = new JButton("LISTAR SEUS ANÚNCIOS");
@@ -531,16 +531,19 @@ public class Interface extends JFrame {
         JButton btnMenu = new JButton("VOLTAR AO MENU");
 
         c.gridy ++;
+        c.gridx = 2;
         panel.add(btnListarA, c);
-        c.gridy++;
+        c.gridx = 1;
         panel.add(btnCadA, c);
+        c.gridx = 2;
         c.gridy++;
         panel.add(btnEdiDelA, c);
-        c.gridy++;
+        c.gridx = 1;
         panel.add(btnEdiDelA, c);
+        c.gridx = 2;
         c.gridy++;
         panel.add(btnListTodosA, c);
-        c.gridy++;
+        c.gridx = 1;
         panel.add(btnMenu, c);
 
         display = new JTextArea(10, 30);
@@ -548,8 +551,8 @@ public class Interface extends JFrame {
         JScrollPane scroll = new JScrollPane(display);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        c.gridx = 3;
-        c.gridy++;
+        c.gridx = 2;
+        c.gridy = 8;
         c.gridwidth = 2;
         panel.add(scroll, c);
 

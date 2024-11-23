@@ -12,13 +12,13 @@ public class Database {
     private int id;
 
     
-        public void addCuidador (String cpf, String nome, int idade, String telefone){
-            Cuidador cuidador = new Cuidador(cpf, nome, idade, telefone);
+        public void addCuidador (String cpf, String nome, int idade, String telefone, String area){
+            Cuidador cuidador = new Cuidador(cpf, nome, idade, telefone, area);
             cuidadores.add(cuidador);
         }
     
-        public void addFamiliar (String cpf, String nome, int idade){
-            Familiar familiar = new Familiar(cpf, nome, idade);
+        public void addFamiliar (String cpf, String nome, int idade, String parentesco){
+            Familiar familiar = new Familiar(cpf, nome, idade, parentesco);
             familiares.add(familiar);
         }
     
@@ -45,29 +45,47 @@ public class Database {
     
     
         public void listarAnuncios(Cuidador cuidador, JTextArea display) {
-            display.setText("SEUS ANÚNCIOS:\n"); // Limpa e define o cabeçalho inicial
+
+            boolean temAnuncio = false;
+            display.setText("SEUS ANÚNCIOS:\n"); 
         
             for (Anuncio anuncio : this.anuncios) {
                 if (anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+                    temAnuncio = true;
                     display.append("\nID: " + anuncio.getId() +
                                    "\nDESCRIÇÃO: " + anuncio.getDescricao() +
                                    "\nVALOR: R$ " + anuncio.getValor() +
                                    "\n---------------\n");
                 }
             }
+
+            if (!temAnuncio) {
+
+                display.setText("VOCÊ NÃO TEM ANÚNCIOS CADASTRADOS");
+                
+            }
         }        
         
     
         public void listarAnuncios(JTextArea display) {
+            boolean temAnuncio = false;
             display.setText("---------------\n");
             display.append("CUIDA+ ANÚNCIOS\n");
         
             for (Anuncio anuncio : this.anuncios) {
+                temAnuncio = true;
                 display.append("\nCUIDADOR: " + anuncio.getNomeCuidador() +
+                                "\nESPECIALIDADE: " + anuncio.getEspecialidadeCuidador() +
                                "\nDESCRIÇÃO: " + anuncio.getDescricao() +
                                "\nVALOR: R$ " + anuncio.getValor() +
                                "\nTELEFONE PARA CONTATO: " + anuncio.getTelefoneCuidador() +
                                "\n---------------\n");
+            }
+
+            if (!temAnuncio) {
+
+                display.setText("NÃO HÁ ANÚNCIO CADASTRADO");
+                
             }
         }
         
@@ -125,7 +143,15 @@ public class Database {
             display.append("VOCÊ NÃO POSSUI NENHUM ANÚNCIO COM ESSE ID."); 
         }
     }
-
+    public Anuncio getAnuncioDoCuidador(Cuidador cuidador, int id) {
+        for (Anuncio anuncio : anuncios) {
+            if (anuncio.getId() == id && anuncio.getCpfCuidador().equals(cuidador.getCpf())) {
+                return anuncio; 
+            }
+        }
+        return null;
+    }
+    
     public Anuncio getAnuncio(int id) {
         for (Anuncio anuncio : this.anuncios) {
             if(anuncio.getId() == id) {

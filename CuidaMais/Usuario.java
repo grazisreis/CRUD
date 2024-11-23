@@ -31,4 +31,6 @@ public abstract class Usuario {
     public int getIdade() {
         return idade;
     }
+
+    public abstract String exibirInformacoes();
 }

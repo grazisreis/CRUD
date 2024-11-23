@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class Interface extends JFrame {
     
     private Database db;
-    private JTextField cpfField, nomeField, idadeField, telefoneField, valorField, descricaoField, cuidadorField, idField, familiarField;
+    private JTextField cpfField, nomeField, idadeField, telefoneField, valorField, descricaoField, cuidadorField, idField, familiarField, especialidadeField, parentescoField;
     private JTextArea display;
     private Cuidador cuidador;
     private Familiar familiar;
@@ -176,6 +176,8 @@ public class Interface extends JFrame {
         idadeField = new JTextField(15);
         JLabel telefoneLabel = new JLabel("TELEFONE:");
         telefoneField = new JTextField(15);
+        JLabel especialidadLabel = new JLabel("ESPECIALIDADE:");
+        especialidadeField = new JTextField(15);
         JButton btnSalvar = new JButton("SALVAR");
         JButton btnMenu =  new JButton("VOLTAR AO MENU");
 
@@ -202,8 +204,15 @@ public class Interface extends JFrame {
         c.gridx = 2;
         panel.add(telefoneField, c);
 
+        c.gridx = 0;
+        c.gridy++;
+        panel.add(especialidadLabel, c);
         c.gridx = 2;
-        c.gridy=8;
+        panel.add(especialidadeField, c);
+
+
+        c.gridx = 2;
+        c.gridy++;
         c.gridwidth = 2;
         panel.add(btnSalvar, c);
 
@@ -211,11 +220,11 @@ public class Interface extends JFrame {
         display.setEditable(false);
         JScrollPane scroll = new JScrollPane(display);
         c.gridx = 2;
-        c.gridy = 9;
+        c.gridy ++;
         c.gridwidth = 2;
         panel.add(scroll, c);
 
-        c.gridy = 10;
+        c.gridy++;
         panel.add(btnMenu,c);
 
         
@@ -225,7 +234,7 @@ public class Interface extends JFrame {
             public void actionPerformed(ActionEvent e){
 
                 if (cpfField.getText().isEmpty() || nomeField.getText().isEmpty() || 
-                idadeField.getText().isEmpty() || telefoneField.getText().isEmpty()) {
+                idadeField.getText().isEmpty() || telefoneField.getText().isEmpty() || especialidadeField.getText().isEmpty()) {
                 
                 display.setText("TODOS OS CAMPOS SÃO OBRIGATÓRIOS, PREENCHA-OS");
                 
@@ -242,8 +251,9 @@ public class Interface extends JFrame {
                 String nome = nomeField.getText();
                 int idade = Integer.parseInt(idadeField.getText());
                 String telefone = telefoneField.getText();
+                String especialidade = especialidadeField.getText();
 
-                db.addCuidador(cpf, nome, idade, telefone);
+                db.addCuidador(cpf, nome, idade, telefone, especialidade);
                 cuidador = db.getCuidador(cpf);
                 display.setText("CUIDADOR " + cuidador.getNome().toUpperCase() + " CADASTRADO");
 
@@ -284,10 +294,10 @@ public class Interface extends JFrame {
 
     private void JanelaFamiliaCadastro(){
 
-        JFrame janelacuidadorcadastro = new JFrame("CUIDA+: CADASTRO FAMILIAR");
-        janelacuidadorcadastro.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        janelacuidadorcadastro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        janelacuidadorcadastro.setLocationRelativeTo(null);
+        JFrame janelafamiliarcadastro = new JFrame("CUIDA+: CADASTRO FAMILIAR");
+        janelafamiliarcadastro.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        janelafamiliarcadastro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janelafamiliarcadastro.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(200, 248, 255));
@@ -304,6 +314,8 @@ public class Interface extends JFrame {
         nomeField = new JTextField(15);
         JLabel idadeLabel = new JLabel("IDADE:");
         idadeField = new JTextField(15);
+        JLabel parentescoLabel = new JLabel("GRAU DE PARENTESCO:");
+        parentescoField = new JTextField(15);
         JButton btnSalvar = new JButton("SALVAR");
         JButton btnMenu = new JButton("VOLTAR AO MENU");
 
@@ -322,6 +334,13 @@ public class Interface extends JFrame {
         panel.add(idadeLabel, c);
         c.gridx = 2;
         panel.add(idadeField, c);
+
+        c.gridx = 0;
+        c.gridy++;
+        panel.add(parentescoLabel, c);
+        c.gridx = 2;
+        panel.add(parentescoField, c);
+
 
         c.gridx = 2;
         c.gridy=8;
@@ -344,7 +363,7 @@ public class Interface extends JFrame {
             public void actionPerformed(ActionEvent e){
 
                 if (cpfField.getText().isEmpty() || nomeField.getText().isEmpty() || 
-                idadeField.getText().isEmpty()) {
+                idadeField.getText().isEmpty() || parentescoField.getText().isEmpty()) {
                 
                     display.setText("TODOS OS CAMPOS SÃO OBRIGATÓRIOS, PREENCHA-OS");
                 
@@ -360,8 +379,9 @@ public class Interface extends JFrame {
                 else{
                     String nome = nomeField.getText();
                     int idade = Integer.parseInt(idadeField.getText());
+                    String parentesco = parentescoField.getText();
     
-                    db.addFamiliar(cpf, nome, idade);
+                    db.addFamiliar(cpf, nome, idade, parentesco);
                     familiar = db.getFamiliar(cpf);
                     display.setText("FAMILIAR CADASTRADO:\n" + familiar.getNome().toUpperCase());
     
@@ -378,13 +398,13 @@ public class Interface extends JFrame {
             public void actionPerformed(ActionEvent e){
                 
                 initUI();
-                janelacuidadorcadastro.dispose();
+                janelafamiliarcadastro.dispose();
   
             }
         });
 
-        janelacuidadorcadastro.add(panel);
-        janelacuidadorcadastro.setVisible(true);
+        janelafamiliarcadastro.add(panel);
+        janelafamiliarcadastro.setVisible(true);
     }
 
 
@@ -555,6 +575,8 @@ public class Interface extends JFrame {
         c.gridy = 8;
         c.gridwidth = 2;
         panel.add(scroll, c);
+
+        display.append(cuidador.exibirInformacoes());
 
         btnListarA.addActionListener(new ActionListener() {
             @Override
@@ -785,6 +807,8 @@ public class Interface extends JFrame {
         c.gridy++;
         c.gridwidth = 2;
         panel.add(scroll, c);
+        db.listarAnuncios(cuidador, display);
+
 
         c.gridwidth = 0;
         c.gridy++;
@@ -796,98 +820,91 @@ public class Interface extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     int id = Integer.parseInt(idField.getText());
-                    
                     Cuidador cuidador = db.getCuidador(cpf);
-                    Anuncio anuncio = db.getAnuncio(id);
-        
+                    Anuncio anuncio = db.getAnuncioDoCuidador(cuidador, id); 
+
                     if (anuncio == null) {
                         limparDisplay();
-                        display.setText("ID NÃO ENCONTRADO, TENTE NOVAMENTE");
+                        display.setText("ID NÃO ENCONTRADO OU NÃO PERTENCE A VOCÊ.");
                         return;
                     }
         
                     int confirm = JOptionPane.showConfirmDialog(
                         null,
-                        "TEM CERTEZA QUE DESEJA DELETAR ANÚNCIO COM ID " + id + "?",
+                        "TEM CERTEZA QUE DESEJA DELETAR O ANÚNCIO COM ID " + id + "?",
                         "CONFIRMAR A EXCLUSÃO",
                         JOptionPane.YES_NO_OPTION
                     );
         
                     if (confirm == JOptionPane.YES_OPTION) {
+                        db.deletarAnuncio(cuidador, anuncio, display);
                         limparDisplay();
-                        db.deletarAnuncio(cuidador, anuncio, display); 
-                        display.setText("ANÚNCIO DELETADO COM SUCESSO!");
+                        display.setText("ANÚNCIO DE ID " + id + " REMOVIDO COM SUCESSO!");
                     }
         
                 } catch (NumberFormatException ex) {
                     limparDisplay();
                     display.setText("POR FAVOR, INSIRA UM ID VÁLIDO.");
-                } 
+                }
             }
         });
         
-        btnEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int id = Integer.parseInt(idField.getText());
         
-                    Cuidador cuidador = db.getCuidador(cpf);
-                    Anuncio anuncio = db.getAnuncio(id);
-        
-                    if (anuncio == null) {
-                        display.setText("ID NÃO ENCONTRADO, TENTE NOVAMENTE.");
-                        return;
-                    }
-        
-                    JTextField descricaoField = new JTextField(anuncio.getDescricao(), 20);
-                    JTextField valorField = new JTextField(String.valueOf(anuncio.getValor()), 10);
-        
-                    JPanel panel = new JPanel(new GridLayout(3, 2));
-                    panel.add(new JLabel("DESCRIÇÃO:"));
-                    panel.add(descricaoField);
-                    panel.add(new JLabel("VALOR:"));
-                    panel.add(valorField);
-        
-                    int result = JOptionPane.showConfirmDialog(
-                        null,
-                        panel,
-                        "EDITAR ANÚNCIO (ID: " + id + ")",
-                        JOptionPane.OK_CANCEL_OPTION
-                    );
-        
-                    if (result == JOptionPane.OK_OPTION) {
-                        String novaDescricao = descricaoField.getText();
-                        Double novoValor = Double.parseDouble(valorField.getText());
-        
-                        try {
-                            
-                        } catch (NumberFormatException ex) {
-                            display.setText("POR FAVOR, INSIRA UM ID VÁLIDO.");
-                        }
-        
-                        if (!novaDescricao.equals(anuncio.getDescricao()) && saoValoresDiferentes(novoValor, anuncio.getValor())) {
-                            limparDisplay();
-                            db.editarAnuncio(cuidador, id, novaDescricao, novoValor, display);
-                        } else if (!novaDescricao.equals(anuncio.getDescricao())) {
-                            limparDisplay();
-                            db.editarAnuncio(cuidador, id, novaDescricao, display);
-                        } else if (saoValoresDiferentes(novoValor, anuncio.getValor())) {
-                            limparDisplay();
-                            db.editarAnuncio(cuidador, id, novoValor, display);
-                        } else {
-                            limparDisplay();
-                            display.setText("NENHUMA ALTERAÇÃO FOI REALIZADA.");
-                        }
-                        
-                    }
-        
-                } catch (NumberFormatException ex) {
-                    display.setText("POR FAVOR, INSIRA UM ID VÁLIDO.");
+btnEdit.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            int id = Integer.parseInt(idField.getText());
+            Cuidador cuidador = db.getCuidador(cpf);
+            Anuncio anuncio = db.getAnuncioDoCuidador(cuidador, id); 
+            
+            if (anuncio == null) {
+                limparDisplay();
+                display.setText("ID NÃO ENCONTRADO OU NÃO PERTENCE A VOCÊ.");
+                return;
+            }
 
-                }   
+            JTextField descricaoField = new JTextField(anuncio.getDescricao(), 20);
+            JTextField valorField = new JTextField(String.valueOf(anuncio.getValor()), 10);
+
+            JPanel panel = new JPanel(new GridLayout(3, 2));
+            panel.add(new JLabel("DESCRIÇÃO:"));
+            panel.add(descricaoField);
+            panel.add(new JLabel("VALOR:"));
+            panel.add(valorField);
+
+            int result = JOptionPane.showConfirmDialog(
+                null,
+                panel,
+                "EDITAR ANÚNCIO (ID: " + id + ")",
+                JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (result == JOptionPane.OK_OPTION) {
+                String novaDescricao = descricaoField.getText();
+                Double novoValor = Double.parseDouble(valorField.getText());
+
+                if (!novaDescricao.equals(anuncio.getDescricao()) && saoValoresDiferentes(novoValor, anuncio.getValor())) {
+                    limparDisplay();
+                    db.editarAnuncio(cuidador, id, novaDescricao, novoValor, display);
+                } else if (!novaDescricao.equals(anuncio.getDescricao())) {
+                    db.editarAnuncio(cuidador, id, novaDescricao, display);
+                } else if (saoValoresDiferentes(novoValor, anuncio.getValor())) {
+                    limparDisplay();
+                    db.editarAnuncio(cuidador, id, novoValor, display);
+                } else {
+                    limparDisplay();
+                    display.setText("NENHUMA ALTERAÇÃO FOI REALIZADA.");
+                }
             }
-        });
+
+        } catch (NumberFormatException ex) {
+            limparDisplay();
+            display.setText("POR FAVOR, INSIRA UM ID E VALOR VÁLIDOS.");
+        }
+    }
+});
+
         
         
 
@@ -963,6 +980,7 @@ public class Interface extends JFrame {
         c.gridy++;
         c.gridwidth = 2;
         panel.add(scroll, c);
+        display.append(familiar.exibirInformacoes());
 
         btnListarA.addActionListener(new ActionListener() {
             @Override

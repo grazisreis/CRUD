@@ -5,6 +5,7 @@ public class Anuncio {
     private Double valor;
     private String telefoneCuidador;
     private String cpfCuidador;
+    private String especialidadeCuidador;
     
 
     public Anuncio(int id,Cuidador cuidador, String descricao, Double valor) {
@@ -14,6 +15,7 @@ public class Anuncio {
         this.valor = valor;
         this.telefoneCuidador = cuidador.getTelefone();
         this.cpfCuidador = cuidador.getCpf();
+        this.especialidadeCuidador = cuidador.getArea();
     }
 
     
@@ -52,10 +54,15 @@ public class Anuncio {
     public String getCpfCuidador() {
         return cpfCuidador;
     }
-
+    
 
     public int getId() {
         return id;
+    }
+
+
+    public String getEspecialidadeCuidador() {
+        return especialidadeCuidador;
     }
 
 
